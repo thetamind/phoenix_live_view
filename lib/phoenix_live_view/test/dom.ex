@@ -253,11 +253,12 @@ defmodule Phoenix.LiveViewTest.DOM do
     end
   end
 
-  defp apply_phx_update(type, html, {tag, attrs, appended_children} = node)
+  defp apply_phx_update(type, html, {tag, attrs, _appended_children} = node)
        when type in ["append", "prepend"] do
     id = attribute(node, "id")
     verify_phx_update_id!(type, id, node)
     children_before = apply_phx_update_children(html, id)
+    appended_children = Floki.children(node, include_text: false)
     existing_ids = apply_phx_update_children_id(type, children_before)
     new_ids = apply_phx_update_children_id(type, appended_children)
     content_changed? = new_ids != existing_ids
@@ -325,8 +326,8 @@ defmodule Phoenix.LiveViewTest.DOM do
 
   defp apply_phx_update_children(html, id) do
     case by_id(html, id) do
-      {_, _, children_before} -> children_before
       nil -> []
+      node -> Floki.children(node, include_text: false)
     end
   end
 
