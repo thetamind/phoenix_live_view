@@ -336,7 +336,7 @@ defmodule Phoenix.LiveViewTest.DOM do
       attribute(child, "id") ||
         raise ArgumentError,
               "setting phx-update to #{inspect(type)} requires setting an ID on each child. " <>
-                "No ID was found on:\n\n#{to_html(child)}"
+                "No ID was found on:\n\n#{inspect_html(child)}"
     end
   end
 
