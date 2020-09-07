@@ -257,6 +257,7 @@ defmodule Phoenix.LiveViewTest.DOM do
        when type in ["append", "prepend"] do
     id = attribute(node, "id")
     verify_phx_update_id!(type, id, node)
+    IO.inspect(node, label: "node")
     children_before = apply_phx_update_children(html, id)
     appended_children = Floki.children(node, include_text: false)
     existing_ids = apply_phx_update_children_id(type, children_before)
@@ -332,7 +333,11 @@ defmodule Phoenix.LiveViewTest.DOM do
   end
 
   defp apply_phx_update_children_id(type, children) do
+    IO.inspect(children, pretty: true, label: "apply_phx_update_children_id(#{inspect(type)})\n")
+
     for child <- children do
+      IO.inspect(child, label: "CHILD")
+
       attribute(child, "id") ||
         raise ArgumentError,
               "setting phx-update to #{inspect(type)} requires setting an ID on each child. " <>
